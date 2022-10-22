@@ -1,0 +1,14 @@
+.modal {
+    width: 70%;
+    height: 70%;
+    top: 50%;
+    left: 50%;
+    right: 50%;
+    bottom: auto;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+}
+
+.overlayModal {
+    background-color: darkgrey;
+}

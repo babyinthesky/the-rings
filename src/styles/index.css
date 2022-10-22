@@ -1,0 +1,81 @@
+@import 'modal.css';
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.container {
+    width: 100%;
+    height: 100%;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+}
+
+.spacebetween {
+    justify-content: space-between;
+}
+
+.width15p {
+    width: 15%;
+}
+
+.width20p {
+    width: 20%;
+}
+
+.width30p {
+    width: 30%;
+}
+
+.width40p {
+    width: 40%;
+}
+
+.width50p {
+    width: 50%;
+}
+
+.width60p {
+    width: 60%;
+}
+
+.width70p {
+    width: 70%;
+}
+
+.heroListContainer {
+    width: 100%;
+    overflow-x: scroll;
+}
+
+.heroCardImage {
+    width: 16rem;
+    height: auto;
+    margin: 0 1rem 1rem 0rem;
+}
+
+.marginRight {
+    margin-right: 1rem;
+}
+
+.modalAttributionColumn {
+    column-count: 2;
+}
