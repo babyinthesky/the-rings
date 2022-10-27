@@ -73,14 +73,14 @@ const HeroInfoModal = ({
                 {hero && (
                     <div className="row">
                         <div className="column width30p">
-                            <h4>Hero card</h4>
+                            {/* <h4>Hero card</h4> */}
                             <HeroCardImage
                                 imgUrl={`${DOMAIN_URL}${hero?.imagesrc}`}
                                 imgAlt={hero.name as string}
                             />
                         </div>
                         <div className="column width70p">
-                            <h4>Hero Info</h4>
+                            {/* <h4>Hero Info</h4> */}
                             <div className="row">
                                 <div className="width40p marginRight">
                                     {briefFieldsToDisplay.map((field) => (

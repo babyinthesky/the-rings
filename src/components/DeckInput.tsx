@@ -9,27 +9,29 @@ const DeckInput = ({
     setDeckListIdValue: (id: string) => void;
     onSearch: () => void;
 }) => {
-    // const [deckInput, setDeckInput] = useState('');
-
+    const handleSearch = () => onSearch();
     return (
-        <form>
+        <form className="marginTop">
             <div className="column">
-                <span>
+                {/* <span>
                     Search for a decklist here
-                </span>
+                </span> */}
                 <div className="row">
                     <input
                         value={deckListIdValue}
                         onChange={(e) => {
                             setDeckListIdValue(e.currentTarget.value);
                         }}
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                                e.preventDefault();
+                                handleSearch();
+                            }
+                        }}
                     />
                     <button
                         type="button"
-                        onClick={()=>{
-                            // console.log(deckInput)
-                            onSearch();
-                        }}
+                        onClick={handleSearch}
                     >
                         Search
                     </button>

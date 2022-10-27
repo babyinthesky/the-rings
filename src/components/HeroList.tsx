@@ -10,16 +10,15 @@ const HeroList = ({
 }) => {
     return (
         <div>
-            {Object.keys(idList).length > 0 && (
+            {/* {Object.keys(idList).length > 0 && (
                 <h3>Here are your heroes:</h3>
-            )}
-            <div className="row heroListContainer">
+            )} */}
+            <div className="row heroListContainer marginTop">
                 {Object.keys(idList)?.map((heroId) => (
                     <HeroCard
                         key={heroId}
                         heroId={heroId}
                         setChoosenHero={setChoosenHero}
-                        // heroAmount={idList[heroId]}
                     />
                 ))}
             </div>
