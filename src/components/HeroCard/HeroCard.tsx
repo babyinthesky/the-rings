@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, memo } from "react";
 import { DOMAIN_URL } from "../../config";
 import { Hero } from "../../types";
 import HeroCardImage from "./HeroCardImage";
 import { ERROR_DEFAULT_TEXT } from '../../config';
 
-const HeroCard = ({
+const HeroCard = memo(({
     heroId,
     setChoosenHero,
 } : {
@@ -50,6 +50,6 @@ const HeroCard = ({
             )}
         </div>
     )
-}
+});
 
 export default HeroCard;
