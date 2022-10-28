@@ -1,7 +1,8 @@
 import Modal from 'react-modal';
-import { Hero } from '../types';
-import HeroCardImage from './HeroCardImage';
-import { DOMAIN_URL } from '../config';
+import { Hero } from '../../types';
+import HeroCardImage from '../HeroCard/HeroCardImage';
+import HeroInfoRow from './HeroInfoRow';
+import { useEffect } from 'react';
 
 const customStyles = {
     content: {
@@ -24,23 +25,6 @@ const customStyles = {
     },
   };
 
-const HeroInfoRow = ({
-    field,
-    value,
-} : {
-    field: string;
-    value: string | number | boolean;
-}) => {
-    const newValue = (typeof value === 'number' || typeof value === 'boolean') ? value.toString() : value;
-    const newField = field.replace('_', ' ');
-    return (
-        <div className="row spacebetween">
-            <span>{`${newField}:`}</span>
-            <div dangerouslySetInnerHTML={{__html: newValue}}/>
-        </div>
-    );
-}
-
 const HeroInfoModal = ({
     hero,
     modalIsOpen,
@@ -50,8 +34,13 @@ const HeroInfoModal = ({
     modalIsOpen: boolean;
     closeModal: () => void;
 }) => {
+    useEffect(() => {
+        Modal.setAppElement('body');
+    }, []);
+
     const briefFieldsToDisplay = ['name', 'pack_name', 'type_name', 'sphere_name', 'code', 'traits', 'threat', 'willpower', 'attack', 'defense', 'health', 'quantity', 'deck_limit', 'illustrator'];
-    const longFieldsToDisplay = ['flavor', 'text']; 
+    const longFieldsToDisplay = ['flavor', 'text'];
+
     return (
         <Modal
             isOpen={modalIsOpen}
@@ -61,30 +50,32 @@ const HeroInfoModal = ({
         >
             <div className="column">
                 <div className="row spacebetween">
-                    <h3>
+                    <h2>
                         {hero?.name}
-                    </h3>
+                    </h2>
                     <div
+                        className="cursor-pointer"
                         onClick={closeModal}
                     >
                         x
                     </div>
                 </div>
                 {hero && (
-                    <div className="row">
-                        <div className="column width30p">
+                    <div className="row margin-top-1">
+                        <div className="column width30p padding-right-2">
                             {/* <h4>Hero card</h4> */}
                             <HeroCardImage
-                                imgUrl={`${DOMAIN_URL}${hero?.imagesrc}`}
+                                imgUrl={hero?.imagesrc as string}
                                 imgAlt={hero.name as string}
                             />
                         </div>
                         <div className="column width70p">
                             {/* <h4>Hero Info</h4> */}
                             <div className="row">
-                                <div className="width40p marginRight">
+                                <div className="width40p padding-right-2">
                                     {briefFieldsToDisplay.map((field) => (
                                         <HeroInfoRow
+                                            key={field}
                                             field={field}
                                             value={hero[field]}
                                         />
@@ -93,8 +84,10 @@ const HeroInfoModal = ({
                                 <div className="width60p">
                                     {longFieldsToDisplay.map((field) => (
                                         <HeroInfoRow
+                                            key={field}
                                             field={field}
                                             value={hero[field]}
+                                            isLongTextField
                                         />
                                     ))}
                                 </div>
@@ -103,8 +96,6 @@ const HeroInfoModal = ({
                     </div>
                 )}
             </div>
-            
-
         </Modal>
     )
 };

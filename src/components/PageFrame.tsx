@@ -1,4 +1,4 @@
-const MainPageFrame = ({ children }:{
+const PageFrame = ({ children }:{
     children: React.ReactElement
 }) => (
     <div className="row container">
@@ -10,4 +10,4 @@ const MainPageFrame = ({ children }:{
     </div>
 );
 
-export default MainPageFrame;
+export default PageFrame;

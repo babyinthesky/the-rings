@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { ChangeEvent } from 'react';
 
 const DeckInput = ({
     deckListIdValue,
@@ -10,8 +10,18 @@ const DeckInput = ({
     onSearch: () => void;
 }) => {
     const handleSearch = () => onSearch();
+    const handleInputOnChange = (event: ChangeEvent<HTMLInputElement>) => {
+        setDeckListIdValue(event.currentTarget.value);
+    }
+    const handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            handleSearch();
+        }
+    }
+
     return (
-        <form className="marginTop">
+        <form className="margin-top-3">
             <div className="column">
                 {/* <span>
                     Search for a decklist here
@@ -19,15 +29,8 @@ const DeckInput = ({
                 <div className="row">
                     <input
                         value={deckListIdValue}
-                        onChange={(e) => {
-                            setDeckListIdValue(e.currentTarget.value);
-                        }}
-                        onKeyDown={(e) => {
-                            if (e.key === 'Enter') {
-                                e.preventDefault();
-                                handleSearch();
-                            }
-                        }}
+                        onChange={handleInputOnChange}
+                        onKeyDown={handleInputKeyDown}
                     />
                     <button
                         type="button"

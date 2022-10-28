@@ -1,3 +1,6 @@
+@import "heroCard.css";
+@import "loadingSpinner.css";
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -19,6 +22,11 @@ input {
 
 button {
     font-size: 1.2rem;
+    cursor: pointer;
+}
+
+span, div, p {
+    font-size: 1.1rem;
 }
 
 .container {
@@ -68,21 +76,29 @@ button {
     width: 70%;
 }
 
-.heroListContainer {
-    width: 100%;
-    overflow-x: scroll;
-}
-
-.heroCardImage {
-    width: 16rem;
-    height: auto;
-    margin: 0 1rem 1rem 0rem;
-}
-
-.marginRight {
-    margin-right: 1rem;
-}
-
-.marginTop {
+.margin-top-3 {
     margin-top: 3rem;
+}
+
+.margin-top-1 {
+    margin-top: 1rem;
+}
+
+.margin-bottom {
+    margin-bottom: 0.5rem;
+}
+
+
+.padding-right-2 {
+    padding-right: 2rem;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
