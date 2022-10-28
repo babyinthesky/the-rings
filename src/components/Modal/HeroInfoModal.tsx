@@ -3,6 +3,7 @@ import { Hero } from '../../types';
 import HeroCardImage from '../HeroCard/HeroCardImage';
 import HeroInfoRow from './HeroInfoRow';
 import { useEffect } from 'react';
+import CloseButton from './CloseButton';
 
 const customStyles = {
     content: {
@@ -53,12 +54,9 @@ const HeroInfoModal = ({
                     <h2>
                         {hero?.name}
                     </h2>
-                    <div
-                        className="cursor-pointer"
+                    <CloseButton
                         onClick={closeModal}
-                    >
-                        x
-                    </div>
+                    />
                 </div>
                 {hero && (
                     <div className="row margin-top-1">

@@ -1,5 +1,6 @@
 @import "heroCard.css";
 @import "loadingSpinner.css";
+@import "closeButton.css";
 
 body {
   margin: 0;
