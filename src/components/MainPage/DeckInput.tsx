@@ -38,6 +38,7 @@ const DeckInput = ({
                 </span> */}
                 <div className="row">
                     <input
+                        data-testid="deck-input"
                         value={deckListIdValue}
                         onChange={handleInputOnChange}
                         onKeyDown={handleInputKeyDown}
