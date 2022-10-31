@@ -1,36 +1,33 @@
 import { fireEvent } from "@testing-library/react";
-import { render, unmountComponentAtNode } from "react-dom";
+import ReactDOM from 'react-dom/client';
 import { act } from "react-dom/test-utils";
 import MainPage from "../components/MainPage/MainPage";
-import { mockFetch, mockedDeckListData, mockErrorFetch } from './testUtils';
+import { mockFetch, mockedDeckListData, mockErrorFetch } from './mock';
+import { createRootElement, unmountRoot } from "./testUtils";
 import { EMPTY_DATA_DEFAULT_TEXT, ERROR_DEFAULT_TEXT } from '../config';
 
-let container: HTMLDivElement | null = null;
+let root: ReactDOM.Root;
+let rootDiv: HTMLElement;
 
 describe('expected data render', () => {
     beforeEach(() => {
-        container = document.createElement("div");
-        document.body.appendChild(container);
+        ({rootDiv, root} = createRootElement());
         (jest.spyOn(window, "fetch") as jest.MockInstance<any, any>).mockImplementation(mockFetch);
     });
 
     afterEach(() => {
-        if (container) {
-            unmountComponentAtNode(container);
-            container.remove();
-            container = null;
-        }
+        unmountRoot(root);
     });
 
     it("fetches data when click 'Search'", async () => {
         await act(async () => {
-            render(<MainPage />, container);
+            root.render(<MainPage />);
         });
     
-        const searchButton = container?.querySelector("[data-testid=search-button]");
+        const searchButton = rootDiv.querySelector("[data-testid=search-button]");
         expect(searchButton?.innerHTML).toBe("Search");
 
-        const inputField = container?.querySelector("[data-testid=deck-input]");
+        const inputField = rootDiv.querySelector("[data-testid=deck-input]");
         expect(inputField).toBeTruthy();
 
         await act(async () => {
@@ -38,28 +35,31 @@ describe('expected data render', () => {
             searchButton?.dispatchEvent(new MouseEvent("click", { bubbles: true }));
         });
 
+        const heroList = rootDiv.querySelector(`[data-testid=hero-list]`);
+
         Object.keys(mockedDeckListData.heroes).forEach((heroId) => {
-            const heroCard = container?.querySelector(`[data-testid=hero-card-${heroId}]`);
+            const heroCard = heroList?.querySelector(`[data-testid=hero-card-${heroId}]`);
             expect(heroCard).toBeTruthy();
         })
     });
 
     it("shows empty data text when data is empty", async () => {
         await act(async () => {
-            render(<MainPage />, container);
+            root.render(<MainPage />);
         });
     
-        expect(container?.textContent).toContain(EMPTY_DATA_DEFAULT_TEXT);
+        const heroList = rootDiv.querySelector(`[data-testid=hero-list]`);
+        expect(heroList?.textContent).toContain(EMPTY_DATA_DEFAULT_TEXT);
     });
 
     it("opens modal when press hero card", async () => {
         await act(async () => {
-            render(<MainPage />, container);
+            root.render(<MainPage />);
         });
     
-        const searchButton = container?.querySelector("[data-testid=search-button]");
+        const searchButton = rootDiv.querySelector("[data-testid=search-button]");
 
-        const inputField = container?.querySelector("[data-testid=deck-input]");
+        const inputField = rootDiv.querySelector("[data-testid=deck-input]");
 
         await act(async () => {
             fireEvent.change(inputField as Element, {target: {value: 1}});
@@ -67,7 +67,7 @@ describe('expected data render', () => {
         });
 
 
-        const heroCard = container?.querySelector(`[data-testid=hero-card-${Object.keys(mockedDeckListData.heroes)[0]}]`);
+        const heroCard = rootDiv.querySelector(`[data-testid=hero-card-${Object.keys(mockedDeckListData.heroes)[0]}]`);
         expect(heroCard).toBeTruthy();
         
         await act(async () => {
@@ -81,35 +81,31 @@ describe('expected data render', () => {
 
 describe('error handling', () => {
     beforeEach(() => {
-        container = document.createElement("div");
-        document.body.appendChild(container);
+        ({rootDiv, root} = createRootElement());
         (jest.spyOn(window, "fetch") as jest.MockInstance<any, any>).mockImplementation(mockErrorFetch);
     });
 
     afterEach(() => {
-        if (container) {
-            unmountComponentAtNode(container);
-            container.remove();
-            container = null;
-        }
+        unmountRoot(root);
     });
 
     it("shows error message", async () => {
         await act(async () => {
-            render(<MainPage />, container);
+            root.render(<MainPage />);
         });
 
-        const searchButton = container?.querySelector("[data-testid=search-button]");
+        const searchButton = rootDiv.querySelector("[data-testid=search-button]");
         expect(searchButton?.innerHTML).toBe("Search");
 
-        const inputField = container?.querySelector("[data-testid=deck-input]");
+        const inputField = rootDiv.querySelector("[data-testid=deck-input]");
         expect(inputField).toBeTruthy();
 
         await act(async () => {
             fireEvent.change(inputField as Element, {target: {value: 0}});
             searchButton?.dispatchEvent(new MouseEvent("click", { bubbles: true }));
         });
-    
-        expect(container?.textContent).toContain(ERROR_DEFAULT_TEXT);
+
+        const heroList = rootDiv.querySelector(`[data-testid=hero-list]`);
+        expect(heroList?.textContent).toContain(ERROR_DEFAULT_TEXT);
     });
 });

@@ -1,47 +1,42 @@
-import { render, unmountComponentAtNode } from 'react-dom';
+import ReactDOM from 'react-dom/client';
 import { act } from 'react-dom/test-utils';
 import HeroInfoModal from '../components/Modal/HeroInfoModal';
-import { mockFetch, mockedCardData } from './testUtils';
+import { mockFetch, mockedCardData } from './mock';
+import { createRootElement, unmountRoot } from './testUtils';
 
-
-let container: HTMLDivElement | null = null;
+let root: ReactDOM.Root;
+let rootDiv: HTMLElement;
 
 describe('expected data render', () => {
     beforeEach(() => {
-        container = document.createElement("div");
-        document.body.appendChild(container);
+        ({rootDiv, root} = createRootElement());
         (jest.spyOn(window, "fetch") as jest.MockInstance<any, any>).mockImplementation(mockFetch);
     });
 
     afterEach(() => {
-        if (container) {
-            unmountComponentAtNode(container);
-            container.remove();
-            container = null;
-        }
+        unmountRoot(root);
     });
 
     it('renders hero data in modal', async () => {
         const heroId = '144003';
         await act(async () => {
-            render(
+            root.render(
                 <HeroInfoModal
                     hero={mockedCardData}
                     modalIsOpen={true}
                     closeModal={() => jest.fn()}
-                />,
-                container,
+                />
             );
         });
 
-        const heroCard = document?.querySelector(`[data-testid=modal-${heroId}]`);
-        expect(heroCard).toBeTruthy();
+        const modal = document.querySelector(`[data-testid=modal-${heroId}]`);
+        expect(modal).toBeTruthy();
 
-        const heroCardImage = document?.querySelector(`[data-testid=img-${heroId}]`);
+        const heroCardImage = modal?.querySelector(`[data-testid=img-${heroId}]`);
         expect(heroCardImage).toBeTruthy();
 
-        expect(document.querySelector('h2')?.innerHTML).toBe(mockedCardData.name);
+        expect(modal?.querySelector('h2')?.innerHTML).toBe(mockedCardData.name);
 
-        expect(document.getElementsByTagName('span')).toHaveLength(14);
+        expect(modal?.getElementsByTagName('span')).toHaveLength(14);
     });
 });

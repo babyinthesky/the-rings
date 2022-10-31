@@ -25,7 +25,10 @@ const HeroList = memo(({
         {/* {Object.keys(idList).length > 0 && (
             <h3>Here are your heroes:</h3>
         )} */}
-        <div className="row hero-list-container margin-top-3">
+        <div
+            data-testid="hero-list"
+            className="row hero-list-container margin-top-3"
+        >
             {loading ? (
                 <CenterBox>
                     <LoadingSpinner />
