@@ -15,9 +15,7 @@ const MainPage = () => {
 
     const fetchDeckList = useCallback(() => {
         setIsLoading(true)
-        console.log(deckListIdValue);
         fetch(`${DOMAIN_URL}/api/public/decklist/${deckListIdValue}.json`).then((res) => {
-            console.log(res);
             setIsLoading(false);
             if(res.ok) {
                 setErrorText('');
@@ -25,9 +23,9 @@ const MainPage = () => {
             }
             throw new Error('HTTP ' + res.status);
         }).then((data) => {
-            console.log(data);
-            setHeroIdListObj(data.heroes);
+            setHeroIdListObj(data.heroes || {});
         }).catch((error) => {
+            setIsLoading(false);
             setErrorText(error.message);
         });
     }, [deckListIdValue]);

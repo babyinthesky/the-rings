@@ -49,7 +49,10 @@ const HeroInfoModal = ({
             style={customStyles}
             contentLabel="Example Modal"
         >
-            <div className="column">
+            <div
+                className="column"
+                data-testid={`modal-${hero?.code}`}
+            >
                 <div className="row spacebetween">
                     <h2>
                         {hero?.name}
@@ -63,7 +66,8 @@ const HeroInfoModal = ({
                         <div className="column width30p padding-right-2">
                             {/* <h4>Hero card</h4> */}
                             <HeroCardImage
-                                imgUrl={hero?.imagesrc as string}
+                                heroId={hero.code as string}
+                                imgUrl={hero.imagesrc as string}
                                 imgAlt={hero.name as string}
                             />
                         </div>

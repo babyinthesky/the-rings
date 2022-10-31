@@ -11,9 +11,9 @@ const HeroCard = memo(({
     heroId: string;
     setChoosenHero: (hero: Hero) => void;
 }) => {
-    console.log(heroId);
     const [heroInfo, setHeroInfo] = useState<Hero>();
     const [errorText, setErrorText] = useState('');
+
     const handleCardOnClick = () => {
         if (heroInfo) {
             setChoosenHero(heroInfo);
@@ -40,12 +40,13 @@ const HeroCard = memo(({
         <div
             className="cursor-pointer hero-card-container"
             onClick={handleCardOnClick}
-            data-testid={`heroId-${heroId}`}
+            data-testid={`hero-card-${heroId}`}
         >
             {errorText ? (
                 <p>{ERROR_DEFAULT_TEXT}</p>
             ) : (
                 <HeroCardImage
+                    heroId={heroId}
                     imgUrl={heroInfo?.imagesrc as string}
                     imgAlt={heroInfo?.name as string}
                 />
