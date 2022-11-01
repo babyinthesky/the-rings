@@ -1,6 +1,6 @@
 import { memo } from 'react';
-import LoadingSpinner from "../LoadingSpinner";
-import { DOMAIN_URL } from "../../config";
+import LoadingSpinner from '../LoadingSpinner';
+import { DOMAIN_URL } from '../../config';
 
 const HeroCardImage = memo(({
     heroId,

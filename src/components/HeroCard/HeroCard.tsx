@@ -1,7 +1,7 @@
-import { useEffect, useState, memo } from "react";
-import { DOMAIN_URL } from "../../config";
-import { Hero } from "../../types";
-import HeroCardImage from "./HeroCardImage";
+import { useEffect, useState, memo } from 'react';
+import { DOMAIN_URL } from '../../config';
+import { Hero } from '../../types';
+import HeroCardImage from './HeroCardImage';
 import { ERROR_DEFAULT_TEXT } from '../../config';
 
 const HeroCard = memo(({

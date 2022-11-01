@@ -1,42 +1,36 @@
-import ReactDOM from 'react-dom/client';
-import { act } from 'react-dom/test-utils';
+import { screen, render, cleanup } from '@testing-library/react';
 import HeroInfoModal from '../components/Modal/HeroInfoModal';
 import { mockFetch, mockedCardData } from './mock';
-import { createRootElement, unmountRoot } from './testUtils';
-
-let root: ReactDOM.Root;
-let rootDiv: HTMLElement;
 
 describe('expected data render', () => {
     beforeEach(() => {
-        ({rootDiv, root} = createRootElement());
-        (jest.spyOn(window, "fetch") as jest.MockInstance<any, any>).mockImplementation(mockFetch);
+        (jest.spyOn(window, 'fetch') as jest.MockInstance<any, any>).mockImplementation(mockFetch);
     });
 
     afterEach(() => {
-        unmountRoot(root);
+        cleanup();
     });
 
     it('renders hero data in modal', async () => {
         const heroId = '144003';
-        await act(async () => {
-            root.render(
-                <HeroInfoModal
-                    hero={mockedCardData}
-                    modalIsOpen={true}
-                    closeModal={() => jest.fn()}
-                />
-            );
-        });
 
-        const modal = document.querySelector(`[data-testid=modal-${heroId}]`);
-        expect(modal).toBeTruthy();
+        render(
+            <HeroInfoModal
+                hero={mockedCardData}
+                modalIsOpen={true}
+                closeModal={() => jest.fn()}
+            />
+        );
+        const modal = await screen.findByTestId(`modal-${heroId}`);
+        expect(modal).toBeInTheDocument();
 
-        const heroCardImage = modal?.querySelector(`[data-testid=img-${heroId}]`);
-        expect(heroCardImage).toBeTruthy();
+        const heroCardImage = await screen.findByTestId(`img-${heroId}`);
+        expect(heroCardImage).toBeInTheDocument();
 
-        expect(modal?.querySelector('h2')?.innerHTML).toBe(mockedCardData.name);
+        const heroName = await screen.findByTestId('modal-hero-name');
+        expect(heroName).toBeInTheDocument();
 
-        expect(modal?.getElementsByTagName('span')).toHaveLength(14);
+        const heroInfoElements = await screen.findAllByTestId('modal-hero-info');
+        expect(heroInfoElements).toHaveLength(16);
     });
 });

@@ -14,9 +14,16 @@ const HeroInfoRow = ({
     return (
         <div className="row spacebetween margin-bottom">
             {!isLongTextField && (
-                <span className="bold-font">{upperCaseField}</span>
+                <span
+                    className="bold-font"
+                >
+                    {upperCaseField}
+                </span>
             )}
-            <div dangerouslySetInnerHTML={{__html: newValue}}/>
+            <div
+                data-testid="modal-hero-info"
+                dangerouslySetInnerHTML={{__html: newValue}}
+            />
         </div>
     );
 }

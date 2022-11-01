@@ -1,111 +1,92 @@
-import { fireEvent } from "@testing-library/react";
-import ReactDOM from 'react-dom/client';
-import { act } from "react-dom/test-utils";
-import MainPage from "../components/MainPage/MainPage";
+import { screen, render, cleanup, within, fireEvent } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import MainPage from '../components/MainPage/MainPage';
 import { mockFetch, mockedDeckListData, mockErrorFetch } from './mock';
-import { createRootElement, unmountRoot } from "./testUtils";
 import { EMPTY_DATA_DEFAULT_TEXT, ERROR_DEFAULT_TEXT } from '../config';
-
-let root: ReactDOM.Root;
-let rootDiv: HTMLElement;
 
 describe('expected data render', () => {
     beforeEach(() => {
-        ({rootDiv, root} = createRootElement());
-        (jest.spyOn(window, "fetch") as jest.MockInstance<any, any>).mockImplementation(mockFetch);
+        (jest.spyOn(window, 'fetch') as jest.MockInstance<any, any>).mockImplementation(mockFetch);
     });
 
     afterEach(() => {
-        unmountRoot(root);
+        cleanup();
     });
 
-    it("fetches data when click 'Search'", async () => {
-        await act(async () => {
-            root.render(<MainPage />);
-        });
+    it('fetches data when click Search', async () => {
+        render(<MainPage />);
     
-        const searchButton = rootDiv.querySelector("[data-testid=search-button]");
-        expect(searchButton?.innerHTML).toBe("Search");
+        const searchButton = await screen.findByTestId('search-button');
+        expect(searchButton).toBeInTheDocument();
 
-        const inputField = rootDiv.querySelector("[data-testid=deck-input]");
-        expect(inputField).toBeTruthy();
+        const inputField = await screen.findByTestId('deck-input');
+        expect(inputField).toBeInTheDocument();
 
-        await act(async () => {
-            fireEvent.change(inputField as Element, {target: {value: 1}});
-            searchButton?.dispatchEvent(new MouseEvent("click", { bubbles: true }));
-        });
+        fireEvent.change(inputField as Element, {target: {value: 1}});
+        await userEvent.click(searchButton);
 
-        const heroList = rootDiv.querySelector(`[data-testid=hero-list]`);
+        const { findByTestId } = within(screen.getByTestId('hero-list'));
 
-        Object.keys(mockedDeckListData.heroes).forEach((heroId) => {
-            const heroCard = heroList?.querySelector(`[data-testid=hero-card-${heroId}]`);
-            expect(heroCard).toBeTruthy();
+        Object.keys(mockedDeckListData.heroes).forEach(async (heroId) => {
+            const heroCard = await findByTestId(`hero-card-${heroId}`);
+            expect(heroCard).toBeInTheDocument();
         })
     });
 
-    it("shows empty data text when data is empty", async () => {
-        await act(async () => {
-            root.render(<MainPage />);
-        });
+    it('shows empty data text when data is empty', async () => {
+        render(<MainPage />);
     
-        const heroList = rootDiv.querySelector(`[data-testid=hero-list]`);
-        expect(heroList?.textContent).toContain(EMPTY_DATA_DEFAULT_TEXT);
+        const { findByText } = within(await screen.findByTestId('hero-list'));
+        const errorTextElement = await findByText(EMPTY_DATA_DEFAULT_TEXT);
+        expect(errorTextElement).toBeInTheDocument();
     });
 
-    it("opens modal when press hero card", async () => {
-        await act(async () => {
-            root.render(<MainPage />);
-        });
+    it('opens modal when press hero card', async () => {
+        render(<MainPage />);
     
-        const searchButton = rootDiv.querySelector("[data-testid=search-button]");
+        const searchButton = await screen.findByTestId('search-button');
 
-        const inputField = rootDiv.querySelector("[data-testid=deck-input]");
+        const inputField = await screen.findByTestId('deck-input');
 
-        await act(async () => {
-            fireEvent.change(inputField as Element, {target: {value: 1}});
-            searchButton?.dispatchEvent(new MouseEvent("click", { bubbles: true }));
-        });
+        fireEvent.change(inputField as Element, {target: {value: 1}});
+        await userEvent.click(searchButton);
 
+        const heroCard = await screen.findByTestId(`hero-card-${Object.keys(mockedDeckListData.heroes)[0]}`);
+        expect(heroCard).toBeInTheDocument();
 
-        const heroCard = rootDiv.querySelector(`[data-testid=hero-card-${Object.keys(mockedDeckListData.heroes)[0]}]`);
-        expect(heroCard).toBeTruthy();
-        
-        await act(async () => {
-            heroCard?.dispatchEvent(new MouseEvent("click", { bubbles: true }));
-        });
+        const modalTestId = `modal-${Object.keys(mockedDeckListData.heroes)[0]}`
+        expect(screen.queryByTestId(modalTestId)).not.toBeInTheDocument();
 
-        const heroInfoModal = document.querySelector(`[data-testid=modal-${Object.keys(mockedDeckListData.heroes)[0]}]`);
-        expect(heroInfoModal).toBeTruthy();
+        await userEvent.click(heroCard);
+
+        const heroInfoModal = await screen.findByTestId(modalTestId);
+        expect(heroInfoModal).toBeInTheDocument();
     });
 });
 
 describe('error handling', () => {
     beforeEach(() => {
-        ({rootDiv, root} = createRootElement());
-        (jest.spyOn(window, "fetch") as jest.MockInstance<any, any>).mockImplementation(mockErrorFetch);
+        (jest.spyOn(window, 'fetch') as jest.MockInstance<any, any>).mockImplementation(mockErrorFetch);
     });
 
     afterEach(() => {
-        unmountRoot(root);
+        cleanup();
     });
 
-    it("shows error message", async () => {
-        await act(async () => {
-            root.render(<MainPage />);
-        });
+    it('shows error message', async () => {
+        render(<MainPage />);
 
-        const searchButton = rootDiv.querySelector("[data-testid=search-button]");
-        expect(searchButton?.innerHTML).toBe("Search");
+        const searchButton = await screen.findByTestId('search-button');
+        expect(searchButton).toBeInTheDocument();
 
-        const inputField = rootDiv.querySelector("[data-testid=deck-input]");
-        expect(inputField).toBeTruthy();
+        const inputField = await screen.findByTestId('deck-input');
+        expect(inputField).toBeInTheDocument();
 
-        await act(async () => {
-            fireEvent.change(inputField as Element, {target: {value: 0}});
-            searchButton?.dispatchEvent(new MouseEvent("click", { bubbles: true }));
-        });
+        fireEvent.change(inputField as Element, {target: {value: 0}});
+        await userEvent.click(searchButton);
 
-        const heroList = rootDiv.querySelector(`[data-testid=hero-list]`);
-        expect(heroList?.textContent).toContain(ERROR_DEFAULT_TEXT);
+        const { findByText } = within(await screen.findByTestId('hero-list'));
+        const errorTextElement = await findByText(ERROR_DEFAULT_TEXT);
+        expect(errorTextElement).toBeInTheDocument();
     });
 });

@@ -54,7 +54,9 @@ const HeroInfoModal = ({
                 data-testid={`modal-${hero?.code}`}
             >
                 <div className="row spacebetween">
-                    <h2>
+                    <h2
+                        data-testid="modal-hero-name"
+                    >
                         {hero?.name}
                     </h2>
                     <CloseButton

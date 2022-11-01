@@ -1,4 +1,4 @@
-import { DOMAIN_URL } from "../config";
+import { DOMAIN_URL } from '../config';
 
 export const mockedDeckListData = {
     "id": 1,

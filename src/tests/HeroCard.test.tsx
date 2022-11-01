@@ -1,64 +1,54 @@
-import ReactDOM from 'react-dom/client';
-import { act } from "react-dom/test-utils";
-import HeroCard from "../components/HeroCard/HeroCard";
-import { createRootElement, unmountRoot } from './testUtils';
+import { screen, render, cleanup } from '@testing-library/react';
+import HeroCard from '../components/HeroCard/HeroCard';
 import { mockFetch, mockedCardData, mockErrorFetch } from './mock';
 import { DOMAIN_URL, ERROR_DEFAULT_TEXT } from '../config';
 
-let root: ReactDOM.Root;
-let rootDiv: HTMLElement;
-
 describe('expected data render', () => {
     beforeEach(() => {
-        ({rootDiv, root} = createRootElement());
-        (jest.spyOn(window, "fetch") as jest.MockInstance<any, any>).mockImplementation(mockFetch);
+        (jest.spyOn(window, 'fetch') as jest.MockInstance<any, any>).mockImplementation(mockFetch);
     });
 
     afterEach(() => {
-        unmountRoot(root);
+        cleanup();
     });
 
     it('renders hero card and image with the correct data', async () => {
         const heroId = '144003';
-        await act(async () => {
-            root.render(
-                <HeroCard
-                    heroId={heroId}
-                    setChoosenHero={() => jest.fn}
-                />
-            );
-        });
+        render(
+            <HeroCard
+                heroId={heroId}
+                setChoosenHero={() => jest.fn}
+            />
+        );
 
-        const heroCard = rootDiv.querySelector(`[data-testid=hero-card-${heroId}]`);
-        expect(heroCard).toBeTruthy();
+        const heroCard = await screen.findByTestId(`hero-card-${heroId}`);
+        expect(heroCard).toBeInTheDocument();
 
-        const heroCardImage = rootDiv.querySelector(`[data-testid=img-${heroId}]`);
-        expect(heroCardImage).toBeTruthy();
+        const heroCardImage = await screen.findByTestId(`img-${heroId}`);
+        expect(heroCardImage).toBeInTheDocument();
         expect(heroCardImage).toHaveProperty('src', `${DOMAIN_URL}${mockedCardData.imagesrc}`);
     });
 });
 
 describe('error handling', () => {
     beforeEach(() => {
-        ({rootDiv, root} = createRootElement());
-        (jest.spyOn(window, "fetch") as jest.MockInstance<any, any>).mockImplementation(mockErrorFetch);
+        (jest.spyOn(window, 'fetch') as jest.MockInstance<any, any>).mockImplementation(mockErrorFetch);
     });
 
     afterEach(() => {
-        unmountRoot(root);
+        cleanup();
     });
 
     it('renders error text', async () => {
         const heroId = '144003';
-        await act(async () => {
-            root.render(
-                <HeroCard
-                    heroId={heroId}
-                    setChoosenHero={() => jest.fn}
-                />
-            );
-        });
+        render(
+            <HeroCard
+                heroId={heroId}
+                setChoosenHero={() => jest.fn}
+            />
+        );
 
-        expect(rootDiv.textContent).toContain(ERROR_DEFAULT_TEXT);
+        const errorTextElement = await screen.findByText(ERROR_DEFAULT_TEXT);
+        expect(errorTextElement).toBeInTheDocument();
     });
  });
