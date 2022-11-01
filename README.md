@@ -1,20 +1,20 @@
 # The Heroes of The Rings
-framework: react
+Framework: React
 
 ## Preparation
-### Install the dependancy packages
-```yarn install```
+
+Install the dependancy packages:
+
+``yarn install``
 
 ## Start app
-### Start the app service
-```yarn start```
 
 It will open a webpage from http://localhost:3000
 
+``yarn start``
+
 ## Test
-### Test the components with mocked data
-```yarn test```
 
-This project includes a test against the rendering of components.
+This project includes a test against the rendering of components with mocked data.
 
-
+``yarn test``
