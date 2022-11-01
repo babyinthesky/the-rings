@@ -15,7 +15,7 @@ describe('expected data render', () => {
 
     it('fetches data when click Search', async () => {
         render(<MainPage />);
-    
+
         const searchButton = await screen.findByTestId('search-button');
         expect(searchButton).toBeInTheDocument();
 
