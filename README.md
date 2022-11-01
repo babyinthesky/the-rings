@@ -1,14 +1,17 @@
 
-## preparation
-### `yarn install`
-    install the dependancy packages
+## Preparation
+### Install the dependancy packages
+    `yarn install`
 
 ## Start app
-### `yarn run start`
-    -start the app service
-### `open http://localhost:3000`
+### Start the app service
+    `yarn run start`
+
+### Open from any browswer:
+    `http://localhost:3000`
 
 ## Test
-### `yarn run test`
-    test the components with mocked data
+### Test the components with mocked data
+    `yarn run test`
+
 
