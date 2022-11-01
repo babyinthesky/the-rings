@@ -1,3 +1,5 @@
+# The Heroes of The Rings
+framework: react
 
 ## Preparation
 ### Install the dependancy packages

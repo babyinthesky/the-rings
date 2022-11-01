@@ -9,10 +9,12 @@ const HeroInfoRow = ({
 }) => {
     const newValue = (typeof value === 'number' || typeof value === 'boolean') ? value.toString() : value;
     const newField = field.replace('_', ' ');
+    const upperCaseField = `${newField.charAt(0).toUpperCase()}${newField.substring(1)}`;
+
     return (
         <div className="row spacebetween margin-bottom">
             {!isLongTextField && (
-                <span>{`${newField}:`}</span>
+                <span className="bold-font">{upperCaseField}</span>
             )}
             <div dangerouslySetInnerHTML={{__html: newValue}}/>
         </div>

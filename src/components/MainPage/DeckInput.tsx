@@ -33,9 +33,7 @@ const DeckInput = ({
     return (
         <form className="margin-top-3">
             <div className="column">
-                {/* <span>
-                    Search for a decklist here
-                </span> */}
+                {/* Search for a decklist here */}
                 <div className="row">
                     <input
                         data-testid="deck-input"
@@ -44,6 +42,7 @@ const DeckInput = ({
                         onKeyDown={handleInputKeyDown}
                         required
                         ref={deckInput}
+                        placeholder="Search for a decklist here"
                     />
                     <button
                         data-testid="search-button"

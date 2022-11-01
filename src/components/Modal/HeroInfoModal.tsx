@@ -37,7 +37,7 @@ const HeroInfoModal = ({
 }) => {
     useEffect(() => {
         Modal.setAppElement('body');
-    }, []);
+    }, []);
 
     const briefFieldsToDisplay = ['name', 'pack_name', 'type_name', 'sphere_name', 'code', 'traits', 'threat', 'willpower', 'attack', 'defense', 'health', 'quantity', 'deck_limit', 'illustrator'];
     const longFieldsToDisplay = ['flavor', 'text'];
@@ -64,7 +64,7 @@ const HeroInfoModal = ({
                 {hero && (
                     <div className="row margin-top-1">
                         <div className="column width30p padding-right-2">
-                            {/* <h4>Hero card</h4> */}
+                            {/* Hero card */}
                             <HeroCardImage
                                 heroId={hero.code as string}
                                 imgUrl={hero.imagesrc as string}
@@ -72,7 +72,7 @@ const HeroInfoModal = ({
                             />
                         </div>
                         <div className="column width70p">
-                            {/* <h4>Hero Info</h4> */}
+                            {/* Hero Info */}
                             <div className="row">
                                 <div className="width40p padding-right-2">
                                     {briefFieldsToDisplay.map((field) => (

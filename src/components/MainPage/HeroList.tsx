@@ -22,9 +22,7 @@ const HeroList = memo(({
     setChoosenHero: (hero: Hero) => void;
 }) => (
     <>
-        {/* {Object.keys(idList).length > 0 && (
-            <h3>Here are your heroes:</h3>
-        )} */}
+        {/* Here are your heroes */}
         <div
             data-testid="hero-list"
             className="row hero-list-container margin-top-3"
