@@ -1,11 +1,10 @@
+import React from 'react';
 import MainPage from './components/MainPage/MainPage';
 
-function App() {
-  return (
+const App = () => (
     <div className="container">
         <MainPage />
     </div>
-  );
-}
+);
 
 export default App;

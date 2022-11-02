@@ -1,8 +1,8 @@
-import { useState, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import PageFrame from '../PageFrame';
 import DeckInput from './DeckInput';
 import HeroList from './HeroList';
-import HeroInfoModal from '../Modal/HeroInfoModal';
+import HeroInfoModalNew from '../Modal/HeroInfoModal';
 import { DOMAIN_URL } from '../../config';
 import { HeroCardListType, Hero } from '../../types';
 
@@ -14,14 +14,14 @@ const MainPage = () => {
     const [isLoading, setIsLoading] = useState(false);
 
     const fetchDeckList = useCallback(() => {
-        setIsLoading(true)
+        setIsLoading(true);
         fetch(`${DOMAIN_URL}/api/public/decklist/${deckListIdValue}.json`).then((res) => {
             setIsLoading(false);
-            if(res.ok) {
+            if (res.ok) {
                 setErrorText('');
                 return res.json();
             }
-            throw new Error('HTTP ' + res.status);
+            throw new Error(`HTTP ${res.status}`);
         }).then((data) => {
             setHeroIdListObj(data.heroes || {});
         }).catch((error) => {
@@ -30,7 +30,7 @@ const MainPage = () => {
         });
     }, [deckListIdValue]);
 
-    const handleCloseModal = ()=> setChoosenHero(undefined);
+    const handleCloseModal = () => setChoosenHero(undefined);
 
     return (
         <PageFrame>
@@ -47,7 +47,7 @@ const MainPage = () => {
                     error={errorText}
                     loading={isLoading}
                 />
-                <HeroInfoModal
+                <HeroInfoModalNew
                     hero={choosenHero}
                     modalIsOpen={!!choosenHero}
                     closeModal={handleCloseModal}
@@ -55,6 +55,6 @@ const MainPage = () => {
             </>
         </PageFrame>
     );
-}
+};
 
 export default MainPage;

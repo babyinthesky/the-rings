@@ -1,14 +1,14 @@
-import { memo } from 'react';
-import HeroCard from '../HeroCard/HeroCard';
+import React, { memo } from 'react';
 import LoadingSpinner from '../LoadingSpinner';
 import CenterBox from '../CenterBox';
+import HorizonList from './HorizonList';
 import { HeroCardListType, Hero } from '../../types';
-import { ERROR_DEFAULT_TEXT, EMPTY_DATA_DEFAULT_TEXT } from '../../config';
+import { ERROR_DEFAULT_TEXT } from '../../config';
 
 const areTwoIdListDifferent = (list1: HeroCardListType, list2: HeroCardListType) => {
     if (Object.keys(list1).length !== Object.keys(list2).length) return true;
-    return Object.keys(list1).some((key1) => !list2.hasOwnProperty(key1));
-}
+    return Object.keys(list1).some((key1) => !Object.prototype.hasOwnProperty.call(list2, key1));
+};
 
 const HeroList = memo(({
     idList,
@@ -20,47 +20,36 @@ const HeroList = memo(({
     error: string;
     loading: boolean;
     setChoosenHero: (hero: Hero) => void;
-}) => (
-    <>
-        {/* Here are your heroes */}
-        <div
-            data-testid="hero-list"
-            className="row hero-list-container margin-top-3"
-        >
-            {loading ? (
-                <CenterBox>
-                    <LoadingSpinner />
-                </CenterBox>
-            ) : (
-                <>
-                    {error ? (
-                        <CenterBox>
-                            <p>{ERROR_DEFAULT_TEXT}</p>
-                        </CenterBox>
-                    ) : (
-                        <>
-                            {(Object.keys(idList)?.length === 0) ? (
-                                <CenterBox>
-                                    <p>{EMPTY_DATA_DEFAULT_TEXT}</p>
-                                </CenterBox>
-                            ) : (
-                                <>
-                                    {Object.keys(idList)?.map((heroId) => (
-                                        <HeroCard
-                                            key={heroId}
-                                            heroId={heroId}
-                                            setChoosenHero={setChoosenHero}
-                                        />
-                                    ))}
-                                </>
-                            )}
-                        </>
-                    )}
-                </>
-            )}
-        </div>
-    </>
-), (prevProps, nextProps) => {
+}) => {
+    if (loading) {
+        return (
+            <CenterBox>
+                <LoadingSpinner />
+            </CenterBox>
+        );
+    }
+
+    return (
+        <>
+            {/* Here are your heroes */}
+            <div
+                data-testid="hero-list"
+                className="margin-top-3"
+            >
+                {error ? (
+                    <CenterBox>
+                        <p>{ERROR_DEFAULT_TEXT}</p>
+                    </CenterBox>
+                ) : (
+                    <HorizonList
+                        data={idList}
+                        setChoosenHero={setChoosenHero}
+                    />
+                )}
+            </div>
+        </>
+    );
+}, (prevProps, nextProps) => {
     if (
         prevProps.error === nextProps.error
         && prevProps.loading === nextProps.loading

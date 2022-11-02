@@ -1,4 +1,4 @@
-import { ChangeEvent, useRef } from 'react';
+import React, { KeyboardEvent, ChangeEvent, useRef } from 'react';
 
 const DeckInput = ({
     deckListIdValue,
@@ -12,23 +12,25 @@ const DeckInput = ({
     const deckInput = useRef<HTMLInputElement>(null);
 
     const handleSearch = () => {
-        if (deckListIdValue && !isNaN(parseInt(deckListIdValue))) {
+        if (deckListIdValue && !Number.isNaN(parseInt(deckListIdValue, 10))) {
             onSearch();
         } else {
             deckInput.current?.setCustomValidity('Please enter one valid id value in number');
             deckInput.current?.reportValidity();
         }
-    }
+    };
+
     const handleInputOnChange = (event: ChangeEvent<HTMLInputElement>) => {
         deckInput.current?.setCustomValidity('');
         setDeckListIdValue(event.currentTarget.value);
-    }
-    const handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    };
+
+    const handleInputKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
             event.preventDefault();
             handleSearch();
         }
-    }
+    };
 
     return (
         <form className="margin-top-3">
@@ -54,7 +56,7 @@ const DeckInput = ({
                 </div>
             </div>
         </form>
-    )
-}
+    );
+};
 
 export default DeckInput;

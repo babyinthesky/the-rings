@@ -2,10 +2,10 @@ import React from 'react';
 import CloseButton from './CloseButton';
 
 const Modal = ({
-    header,
     children,
     isOpen,
-    customStyles = {},
+    customStyles,
+    header,
     onClose,
 } : {
     children: React.ReactElement;
@@ -14,7 +14,7 @@ const Modal = ({
         content?: React.CSSProperties;
         overlay?: React.CSSProperties;
     }
-    header?: React.ReactElement;
+    header?: null | React.ReactElement;
     onClose: () => void;
 }) => {
     if (!isOpen) return null;
@@ -39,6 +39,11 @@ const Modal = ({
             </div>
         </div>
     );
+};
+
+Modal.defaultProps = {
+    customStyles: {},
+    header: null,
 };
 
 export default Modal;
