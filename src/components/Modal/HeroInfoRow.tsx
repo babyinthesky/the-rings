@@ -1,4 +1,5 @@
 import React from 'react';
+import { sanitize } from 'dompurify';
 
 const HeroInfoRow = ({
     field,
@@ -24,7 +25,7 @@ const HeroInfoRow = ({
             )}
             <div
                 data-testid="modal-hero-info"
-                dangerouslySetInnerHTML={{ __html: newValue }}
+                dangerouslySetInnerHTML={{ __html: sanitize(newValue) }}
             />
         </div>
     );
