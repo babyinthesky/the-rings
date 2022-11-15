@@ -1,4 +1,9 @@
-import React, { useEffect, useState, memo } from 'react';
+import React, {
+    useEffect,
+    useState,
+    memo,
+    useCallback,
+} from 'react';
 import { DOMAIN_URL, ERROR_DEFAULT_TEXT } from '../../config';
 import { Hero } from '../../types';
 import HeroCardImage from './HeroCardImage';
@@ -13,11 +18,11 @@ const HeroCard = memo(({
     const [heroInfo, setHeroInfo] = useState<Hero>();
     const [errorText, setErrorText] = useState('');
 
-    const handleCardOnClick = () => {
+    const handleCardOnClick = useCallback(() => {
         if (heroInfo) {
             setChoosenHero(heroInfo);
         }
-    };
+    }, [heroInfo]);
 
     useEffect(() => {
         if (heroId) {

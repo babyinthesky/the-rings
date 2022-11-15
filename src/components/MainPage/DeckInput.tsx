@@ -1,4 +1,9 @@
-import React, { KeyboardEvent, ChangeEvent, useRef } from 'react';
+import React, {
+    KeyboardEvent,
+    ChangeEvent,
+    useRef,
+    useCallback,
+} from 'react';
 
 const DeckInput = ({
     deckListIdValue,
@@ -11,26 +16,26 @@ const DeckInput = ({
 }) => {
     const deckInput = useRef<HTMLInputElement>(null);
 
-    const handleSearch = () => {
+    const handleSearch = useCallback(() => {
         if (deckListIdValue && !Number.isNaN(parseInt(deckListIdValue, 10))) {
             onSearch();
         } else {
             deckInput.current?.setCustomValidity('Please enter one valid id value in number');
             deckInput.current?.reportValidity();
         }
-    };
+    }, [deckListIdValue, onSearch, deckInput]);
 
-    const handleInputOnChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const handleInputOnChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
         deckInput.current?.setCustomValidity('');
         setDeckListIdValue(event.currentTarget.value);
-    };
+    }, [deckInput, setDeckListIdValue]);
 
-    const handleInputKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    const handleInputKeyDown = useCallback((event: KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
             event.preventDefault();
             handleSearch();
         }
-    };
+    }, [handleSearch]);
 
     return (
         <form className="margin-top-3">

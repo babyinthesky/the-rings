@@ -30,8 +30,7 @@ const MainPage = () => {
         });
     }, [deckListIdValue]);
 
-    const handleCloseModal = () => setChoosenHero(undefined);
-
+    const handleCloseModal = useCallback(() => setChoosenHero(undefined), [setChoosenHero]);
     return (
         <PageFrame>
             <>
