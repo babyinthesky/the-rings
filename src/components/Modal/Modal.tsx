@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
 import CloseButton from './CloseButton';
 
 const Modal = ({
@@ -17,6 +17,17 @@ const Modal = ({
     header?: null | React.ReactElement;
     onClose: () => void;
 }) => {
+    const onEscapePress = useCallback((event: KeyboardEvent) => {
+        if (event.key === 'Escape') {
+            onClose();
+        }
+    }, []);
+
+    useEffect(() => {
+        document.addEventListener('keydown', onEscapePress, false);
+        return () => document.removeEventListener('keydown', onEscapePress, false);
+    }, []);
+
     if (!isOpen) return null;
     return (
         <div

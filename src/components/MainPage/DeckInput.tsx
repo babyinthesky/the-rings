@@ -1,8 +1,8 @@
 import React, {
-    KeyboardEvent,
     ChangeEvent,
     useRef,
     useCallback,
+    FormEvent,
 } from 'react';
 
 const DeckInput = ({
@@ -23,22 +23,23 @@ const DeckInput = ({
             deckInput.current?.setCustomValidity('Please enter one valid id value in number');
             deckInput.current?.reportValidity();
         }
-    }, [deckListIdValue, onSearch, deckInput]);
+    }, [deckListIdValue, deckInput, onSearch]);
 
     const handleInputOnChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
         deckInput.current?.setCustomValidity('');
         setDeckListIdValue(event.currentTarget.value);
     }, [deckInput, setDeckListIdValue]);
 
-    const handleInputKeyDown = useCallback((event: KeyboardEvent<HTMLInputElement>) => {
-        if (event.key === 'Enter') {
-            event.preventDefault();
-            handleSearch();
-        }
+    const onSubmit = useCallback((event: FormEvent) => {
+        event.preventDefault();
+        handleSearch();
     }, [handleSearch]);
 
     return (
-        <form className="margin-top-3">
+        <form
+            className="margin-top-3"
+            onSubmit={onSubmit}
+        >
             <div className="column">
                 {/* Search for a decklist here */}
                 <div className="row">
@@ -46,15 +47,14 @@ const DeckInput = ({
                         data-testid="deck-input"
                         value={deckListIdValue}
                         onChange={handleInputOnChange}
-                        onKeyDown={handleInputKeyDown}
+                        // onKeyDown={handleInputKeyDown}
                         required
                         ref={deckInput}
                         placeholder="Search for a decklist here"
                     />
                     <button
                         data-testid="search-button"
-                        type="button"
-                        onClick={handleSearch}
+                        type="submit"
                     >
                         Search
                     </button>

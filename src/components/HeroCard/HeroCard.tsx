@@ -24,6 +24,12 @@ const HeroCard = memo(({
         }
     }, [heroInfo]);
 
+    const handleCardOnKeyDown = useCallback((event: React.KeyboardEvent<HTMLDivElement>) => {
+        if (event.key === 'Enter') {
+            handleCardOnClick();
+        }
+    }, [heroInfo]);
+
     useEffect(() => {
         if (heroId) {
             fetch(`${DOMAIN_URL}/api/public/card/${heroId}.json`).then((res) => {
@@ -38,7 +44,7 @@ const HeroCard = memo(({
                 setErrorText(error.message);
             });
         }
-    }, [heroId, setHeroInfo]);
+    }, []);
 
     return (
         <div
@@ -46,7 +52,7 @@ const HeroCard = memo(({
             role="button"
             tabIndex={0}
             onClick={handleCardOnClick}
-            onKeyDown={handleCardOnClick}
+            onKeyDown={handleCardOnKeyDown}
             data-testid={`hero-card-${heroId}`}
         >
             {errorText ? (
